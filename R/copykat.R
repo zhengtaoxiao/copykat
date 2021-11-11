@@ -33,14 +33,16 @@ start_time <- Sys.time()
   print("step1: read and filter data ...")
   print(paste(nrow(rawmat), " genes, ", ncol(rawmat), " cells in raw data", sep=""))
 
-  genes.raw <- apply(rawmat, 2, function(x)(sum(x>0)))
-
-  if(sum(genes.raw> 200)==0) stop("none cells have more than 200 genes")
-  if(sum(genes.raw<100)>1){
-    rawmat <- rawmat[, -which(genes.raw< 200)]
-    print(paste("filtered out ", sum(genes.raw<=200), " cells with less than 200 genes; remaining ", ncol(rawmat), " cells", sep=""))
-  }
-  ##
+#  genes.raw <- apply(rawmat, 2, function(x)(sum(x>0)))
+#
+#  if(sum(genes.raw> 200)==0) stop("none cells have more than 200 genes")
+#  if(sum(genes.raw<100)>1){
+#    rawmat <- rawmat[, -which(genes.raw< 200)]
+#    print(paste("filtered out ", sum(genes.raw<=200), " cells with less than 200 genes; remaining ", ncol(rawmat), " cells", sep=""))
+#  }
+##
+	
+	
   der<- apply(rawmat,1,function(x)(sum(x>0)))/ncol(rawmat)
 
   if(sum(der>LOW.DR)>=1){
@@ -69,25 +71,25 @@ start_time <- Sys.time()
 
 #  print(paste(nrow(anno.mat)," genes after rm cell cycle genes", sep=""))
   ### secondary filtering
-  ToRemov2 <- NULL
-  for(i in 8:ncol(anno.mat)){
-    cell <- cbind(anno.mat$chromosome_name, anno.mat[,i])
-    cell <- cell[cell[,2]!=0,]
-    if(length(as.numeric(cell))< 5){
-      rm <- colnames(anno.mat)[i]
-      ToRemov2 <- c(ToRemov2, rm)
-    } else if(length(rle(cell[,1])$length)<23|min(rle(cell[,1])$length)< ngene.chr){
-      rm <- colnames(anno.mat)[i]
-      ToRemov2 <- c(ToRemov2, rm)
-    }
-    i<- i+1
-  }
+ # ToRemov2 <- NULL
+ # for(i in 8:ncol(anno.mat)){
+ #   cell <- cbind(anno.mat$chromosome_name, anno.mat[,i])
+ #   cell <- cell[cell[,2]!=0,]
+ #   if(length(as.numeric(cell))< 5){
+ #     rm <- colnames(anno.mat)[i]
+ #     ToRemov2 <- c(ToRemov2, rm)
+ #   } else if(length(rle(cell[,1])$length)<23|min(rle(cell[,1])$length)< ngene.chr){
+ #     rm <- colnames(anno.mat)[i]
+  #    ToRemov2 <- c(ToRemov2, rm)
+  #  }
+  #  i<- i+1
+  #}
 
-  if(length(ToRemov2)==(ncol(anno.mat)-7)) stop("all cells are filtered")
+  #if(length(ToRemov2)==(ncol(anno.mat)-7)) stop("all cells are filtered")
 
-  if(length(ToRemov2)>0){
-    anno.mat <-anno.mat[, -which(colnames(anno.mat) %in% ToRemov2)]
-  }
+  #if(length(ToRemov2)>0){
+  #  anno.mat <-anno.mat[, -which(colnames(anno.mat) %in% ToRemov2)]
+  #}
 
  # print(paste("filtered out ", length(ToRemov2), " cells with less than ",ngene.chr, " genes per chr", sep=""))
   rawmat3 <- data.matrix(anno.mat[, 8:ncol(anno.mat)])
@@ -178,26 +180,26 @@ start_time <- Sys.time()
   ###filter cells
   anno.mat2 <- anno.mat[which(DR2>=UP.DR), ]
 
-  ToRemov3 <- NULL
-  for(i in 8:ncol(anno.mat2)){
-    cell <- cbind(anno.mat2$chromosome_name, anno.mat2[,i])
-    cell <- cell[cell[,2]!=0,]
-    if(length(as.numeric(cell))< 5){
-      rm <- colnames(anno.mat2)[i]
-      ToRemov3 <- c(ToRemov3, rm)
-    } else if(length(rle(cell[,1])$length)<23|min(rle(cell[,1])$length)< ngene.chr){
-      rm <- colnames(anno.mat2)[i]
-      ToRemov3 <- c(ToRemov3, rm)
-    }
-    i<- i+1
-  }
+ # ToRemov3 <- NULL
+ # for(i in 8:ncol(anno.mat2)){
+ #   cell <- cbind(anno.mat2$chromosome_name, anno.mat2[,i])
+ #   cell <- cell[cell[,2]!=0,]
+ #   if(length(as.numeric(cell))< 5){
+ #     rm <- colnames(anno.mat2)[i]
+ #     ToRemov3 <- c(ToRemov3, rm)
+ #   } else if(length(rle(cell[,1])$length)<23|min(rle(cell[,1])$length)< ngene.chr){
+ #     rm <- colnames(anno.mat2)[i]
+ #     ToRemov3 <- c(ToRemov3, rm)
+ #   }
+ #   i<- i+1
+ # }
 
-  if(length(ToRemov3)==ncol(norm.mat.relat)) stop ("all cells are filtered")
+ # if(length(ToRemov3)==ncol(norm.mat.relat)) stop ("all cells are filtered")
 
-  if(length(ToRemov3)>0){
-    norm.mat.relat <-norm.mat.relat[, -which(colnames(norm.mat.relat) %in% ToRemov3)]
+ # if(length(ToRemov3)>0){
+ #   norm.mat.relat <-norm.mat.relat[, -which(colnames(norm.mat.relat) %in% ToRemov3)]
    # print(paste("filtered out ", length(ToRemov3), " cells with less than ",ngene.chr, " genes per chr", sep=""))
-  }
+ # }
 
   #print(paste("final segmentation: ", nrow(norm.mat.relat), " genes; ", ncol(norm.mat.relat), " cells", sep=""))
 
