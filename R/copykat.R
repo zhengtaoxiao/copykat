@@ -250,7 +250,7 @@ start_time <- Sys.time()
 
 #plot heatmap
  print("step 8: ploting heatmap ...")
-  my_palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(n = 3, name = "RdBu")))(n = 999)
+  my_palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(n = 9, name = "RdBu")))(n = 999)
 
   chr <- as.numeric(Aj$DNA.adj$chrom) %% 2+1
   rbPal1 <- colorRampPalette(c('black','grey'))
@@ -382,7 +382,7 @@ start_time <- Sys.time()
 
   ####%%%%%%%%%%%%%%%%%next heatmaps, subpopulations and tSNE overlay
   print("step 10: ploting heatmap ...")
-  my_palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(n = 3, name = "RdBu")))(n = 999)
+  my_palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(n = 9, name = "RdBu")))(n = 999)
 
   chr <- as.numeric(Aj$DNA.adj$chrom) %% 2+1
   rbPal1 <- colorRampPalette(c('black','grey'))
